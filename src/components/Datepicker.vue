@@ -22,6 +22,7 @@
       :required="required"
       :bootstrapStyling="bootstrapStyling"
       :use-utc="useUtc"
+      :dateParser="dateParser"
       @showCalendar="showCalendar"
       @closeCalendar="close"
       @typedDate="setTypedDate"
@@ -153,6 +154,10 @@ export default {
     maximumView: {
       type: String,
       default: 'year'
+    },
+    dateParser: {
+      type: Function,
+      default: v => Date.parse(v)
     }
   },
   data () {

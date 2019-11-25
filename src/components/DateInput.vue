@@ -62,7 +62,11 @@ export default {
     required: Boolean,
     typeable: Boolean,
     bootstrapStyling: Boolean,
-    useUtc: Boolean
+    useUtc: Boolean,
+    dateParser: {
+      type: Function,
+      default: v => Date.parse(v)
+    }
   },
   data () {
     const constructedDateUtils = makeDateUtils(this.useUtc)
@@ -118,7 +122,7 @@ export default {
       }
 
       if (this.typeable) {
-        const typedDate = Date.parse(this.input.value)
+        const typedDate = this.dateParser(this.input.value)
         if (!isNaN(typedDate)) {
           this.typedDate = this.input.value
           this.$emit('typedDate', new Date(this.typedDate))
@@ -130,7 +134,7 @@ export default {
      * called once the input is blurred
      */
     inputBlurred () {
-      if (this.typeable && isNaN(Date.parse(this.input.value))) {
+      if (this.typeable && isNaN(this.dateParser(this.input.value))) {
         this.clearDate()
         this.input.value = null
         this.typedDate = null
